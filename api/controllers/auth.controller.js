@@ -45,11 +45,6 @@ export const login = async (request, response) => {
         // CHECK IF PASSWORD IS CORRECT
         console.log('User password from DB:', user.password);
 
-        if (!user.password) {
-            console.log('No password found for user:', username);
-            return response.status(401).json({ msg: "Invalid credentials" });
-        }
-
         const isPasswordCorrect = bcryptjs.compareSync(password, user.password);
         if (!isPasswordCorrect) {
             console.log('Password mismatch for user:', username);
