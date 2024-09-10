@@ -18,8 +18,6 @@ export const register = async (request, response) => {
                 password: hashedPassword,
             },
         });
-
-
         response.status(201).json(newUser)
     } catch (error) {
         console.log(error)
@@ -55,9 +53,11 @@ export const login = async (request, response) => {
         const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET_KEY, { expiresIn: '1h' });
         const expiryDate = new Date(Date.now() + 3600000); // 1 hour
 
+            const {password:userpassword, ...userinfo}=user
+
         response.cookie('access_token', token, { httpOnly: true, expires: expiryDate })
             .status(200)
-            .json({ msg: "Login successful" });
+            .json(userinfo);
 
     } catch (error) {
         console.error('Error during login:', error);
